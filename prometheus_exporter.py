@@ -3,7 +3,6 @@
 from prometheus_client import start_http_server, Metric, REGISTRY
 import json
 import time
-import requests
 from slugify import slugify
 
 from typing import Dict
@@ -30,6 +29,7 @@ class TelldusLiveCollector(object):
                 metric: Metric,
                 name: str,
                 value: float
+                # Add support for labeling later..
                 #labels, Dict
                 ):
             metric.add_sample(name, value=value, labels={})
@@ -45,12 +45,15 @@ class TelldusLiveCollector(object):
         for device in session.device_ids:
             # Get the raw device info.
             sensor = Device(session, device)
+
             # Is it a device or a sensor?
             if not sensor.is_sensor:
                 continue
+
             # It's a sensor lets continue
             raw_sensor = sensor.device
 
+            # Grab some values we may want to use later on...
             s_id = raw_sensor.get('id','NO_ID')
             s_name = raw_sensor.get('name','NO_NAME')
             c_name = raw_sensor.get('clientName', 'NO_CLIENTNAME')
