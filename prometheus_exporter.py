@@ -28,11 +28,10 @@ class TelldusLiveCollector(object):
         def _add_metric(
                 metric: Metric,
                 name: str,
-                value: float
-                # Add support for labeling later..
-                #labels, Dict
+                value: float,
+                labels: Dict
                 ):
-            metric.add_sample(name, value=value, labels={})
+            metric.add_sample(name, value=value, labels=labels)
 
         """Dump configured devices and sensors."""
         logging.basicConfig(level=logging.WARN)
@@ -41,6 +40,8 @@ class TelldusLiveCollector(object):
         session.update()
 
         device_sensors = dict()
+        sensor_metric = _new_metric('Sensor data fromm Telldus Live', 'histogram')
+
         # Iterate over all the device IDS.
         for device in session.device_ids:
             # Get the raw device info.
@@ -55,23 +56,19 @@ class TelldusLiveCollector(object):
 
             # Grab some values we may want to use later on...
             s_id = raw_sensor.get('id','NO_ID')
-            s_name = raw_sensor.get('name','NO_NAME')
-            c_name = raw_sensor.get('clientName', 'NO_CLIENTNAME')
-
-            # Create a metric for this sensor
-            sensor_metric = _new_metric('Sensor data located at {}'.format(s_name, c_name), 'histogram')
+            s_name = slugify(raw_sensor.get('name','NO_NAME'), separator='_')
+            c_name = slugify(raw_sensor.get('clientName', 'NO_CLIENTNAME'), separator='_')
 
             # Iterate sensors and create a metric for each.
             if raw_sensor.get('data', False):
                 data = raw_sensor.get('data')
+
                 for measurement in data:
                     m_name = measurement['name']
-                    metric_name = 'telldus_{}_{}_{}'.format(
-                            slugify(c_name, separator='_'),
-                            slugify(s_name, separator='_'),
-                            m_name)
-
-                    _add_metric(sensor_metric, metric_name, float(measurement['value']))
+                    metric_name = 'telldus_sensor'
+                    _add_metric(sensor_metric, metric_name, float(measurement['value']),
+                            labels={'client_name': c_name, 'sensor_name': s_name, 'metric_name': m_name}
+                        )
 
             yield sensor_metric
 

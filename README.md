@@ -19,13 +19,8 @@ Follow the guide there for creating the credentials file..
 The metrics exported are formatted like so..:
 
 ```
-# HELP telldus_sensor_data Sensor data located at Växthus
+# HELP telldus_sensor_data Sensor data fromm Telldus Live
 # TYPE telldus_sensor_data histogram
-telldus_<client_name>_<sensor_name>_<name_of_the_sensor_metric> 20.3
-telldus_<client_name>_<sensor_name>_<name_of_the_sensor_metric> 69.0
-
-# HELP telldus_sensor_data Sensor data located at Växthus
-# TYPE telldus_sensor_data histogram
-telldus_engelbrekts_greenhouse_temp 20.3
-telldus_engelbrekts_greenhouse_humidity 69.0
+telldus_sensor{client_name="engelbrekts",metric_name="temp",sensor_name="vaxthus"} 22.3
+telldus_sensor{client_name="engelbrekts",metric_name="humidity",sensor_name="vaxthus"} 53.0
 ```
