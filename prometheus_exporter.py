@@ -70,7 +70,7 @@ class TelldusLiveCollector(object):
                             labels={'client_name': c_name, 'sensor_name': s_name, 'metric_name': m_name}
                         )
 
-            yield sensor_metric
+        yield sensor_metric
 
 if __name__ == '__main__':
     tlc = TelldusLiveCollector()
