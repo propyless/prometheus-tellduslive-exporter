@@ -67,7 +67,8 @@ class TelldusLiveCollector(object):
                     m_name = measurement['name']
                     metric_name = 'telldus_sensor'
                     _add_metric(sensor_metric, metric_name, float(measurement['value']),
-                            labels={'client_name': c_name, 'sensor_name': s_name, 'metric_name': m_name}
+                            labels={'client_name': c_name, 'sensor_name': s_name, 'metric_name': m_name,
+                                    'sensor_scale': measurement['scale']}
                         )
 
         yield sensor_metric
