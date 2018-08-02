@@ -75,7 +75,7 @@ class TelldusLiveCollector(object):
 
 if __name__ == '__main__':
     tlc = TelldusLiveCollector()
-    start_http_server(40001, addr='192.168.1.1')
+    start_http_server(40000)
     REGISTRY.register(TelldusLiveCollector())
 
     while True: time.sleep(30)
