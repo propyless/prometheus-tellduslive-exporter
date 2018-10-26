@@ -9,6 +9,7 @@ from typing import Dict
 
 import logging
 from tellduslive import read_credentials, Session, Device
+import sys
 
 
 class TelldusLiveCollector(object):
@@ -74,8 +75,12 @@ class TelldusLiveCollector(object):
         yield sensor_metric
 
 if __name__ == '__main__':
+    if len(sys.argv) == 2:
+        bind_ip = sys.argv[1]
+    else:
+        bind_ip = '0.0.0.0'
     tlc = TelldusLiveCollector()
-    start_http_server(40001, addr='192.168.1.1')
+    start_http_server(40001, addr=bind_ip)
     REGISTRY.register(TelldusLiveCollector())
 
     while True: time.sleep(30)
