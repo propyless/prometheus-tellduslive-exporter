@@ -75,12 +75,8 @@ class TelldusLiveCollector(object):
         yield sensor_metric
 
 if __name__ == '__main__':
-    if len(sys.argv) == 2:
-        bind_ip = sys.argv[1]
-    else:
-        bind_ip = '0.0.0.0'
     tlc = TelldusLiveCollector()
-    start_http_server(40001, addr=bind_ip)
+    start_http_server(40000)
     REGISTRY.register(TelldusLiveCollector())
 
     while True: time.sleep(30)
