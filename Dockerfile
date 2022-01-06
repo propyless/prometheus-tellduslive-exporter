@@ -1,9 +1,10 @@
-FROM python:3
+FROM python:3.8-alpine
 
 COPY requirements.txt /exporter/
 
 WORKDIR /exporter/
-RUN pip install -r requirements.txt
+RUN apk add --no-cache git curl && \
+	pip install -r requirements.txt
 
 COPY prometheus_exporter.py /exporter/
 
