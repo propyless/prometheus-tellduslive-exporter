@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from prometheus_client import start_http_server, Metric, REGISTRY
 import json
@@ -9,7 +9,6 @@ from typing import Dict
 
 import logging
 from tellduslive import read_credentials, Session, Device
-import sys
 
 
 class TelldusLiveCollector(object):
